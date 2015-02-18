@@ -24,7 +24,7 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE two_before_type {fullstop, numeric, other}\n
              \@ATTRIBUTE two_after_fullstop {TRUE, FALSE}\n
              \@ATTRIBUTE one_after_type {lower, capital_common, np, comma, fullstop, numeric, quotes, other}\n
-             \@ATTRIBUTE one_before_type {title, abbrev, internal, other}\n
+             \@ATTRIBUTE one_before_type {title, abbrev, internal, quotes, other}\n
              \@ATTRIBUTE words_since_EOS integer\n
              \@ATTRIBUTE words_until_EOS integer\n
              \@ATTRIBUTE spaces_following integer\n
@@ -51,12 +51,13 @@ while (<>) {
    elsif ($R1 =~ /^[,]/) {print $file "comma,";} # +1 is comma
    elsif ($R1 =~ /^[.]/) {print $file "fullstop,";} # +1 is fullstop
    elsif ($R1 =~ /^[0-9]/) {print $file "numeric,";} # +1 is numeric
-   elsif ($R1 =~ /^\"/) {print $file "quotes,";} # +1 is quotation mark
+   elsif ($R1 =~ /^''/) {print $file "quotes,";} # +1 is quotation mark
    else {print $file "other,";}
 
    if (&classmember($L1, titles)) {print $file "title,";} # -1 is title
    elsif (&classmember($L1, abbrevs)) {print $file "abbrev,";} # -1 is abbreviation
    elsif (&classmember($L1, sentence_internal)) {print $file "internal,";} # -1 is sentence internal
+   elsif ($L1 =~ /^''/) {print $file "quotes,";} # -1 is quotes
    else {print $file "other,";}
 
    print $file $Llength, ",", $Rlength, ",", $Nspaces, ",", $class, "\n";
