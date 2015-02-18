@@ -20,7 +20,7 @@ $L="/home/1/yarowsky/cs466/hw1/classes";
 # print the first chunk of the ARFF file
 open($file, '>', 'fullstop_data.arff');
 print $file "\@RELATION fullstop\n
-             \@ATTRIBUTE three_before_numeric {TRUE, FALSE}\n
+             \@ATTRIBUTE three_before_type {numeric, capitalized, other}\n
              \@ATTRIBUTE two_before_type {fullstop, numeric, other}\n
              \@ATTRIBUTE two_after_fullstop {TRUE, FALSE}\n
              \@ATTRIBUTE one_after_type {lower, capital_common, np, comma, fullstop, numeric, quotes, backtick, other}\n
@@ -39,8 +39,9 @@ while (<>) {
    @words = split(' ',$_);
    ($class,$id,$L3,$L2,$L1,$C,$R1,$R2,$R3,$Llength,$Rlength,$Nspaces) = @words;
 
-   if ($L3 =~ /^[0-9]/) {print $file "TRUE,";} # -3 is numeric
-   else {print $file "FALSE,";}
+   if ($L3 =~ /^[0-9]/) {print $file "numeric,";} # -3 is numeric
+   elsif ($L3 =~ /^[A-Z]/) {print $file "capitalized,";} # -3 is capitalized
+   else {print $file "other,";}
 
    if ($L2 =~ /^[.]/) {print $file "fullstop,";} # -2 is fullstop
    elsif ($L2 =~ /^[0-9]/) {print $file "numeric,";} # -2 is numeric
