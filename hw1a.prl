@@ -25,6 +25,7 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE two_after_fullstop {TRUE, FALSE}\n
              \@ATTRIBUTE one_after_type {lower, capital_common, np, comma, fullstop, numeric, quotes, other}\n
              \@ATTRIBUTE one_before_type {title, abbrev, internal, quotes, other}\n
+             \@ATTRIBUTE one_before_contains_fullstop {TRUE, FALSE}\n
              \@ATTRIBUTE one_after_length integer\n
              \@ATTRIBUTE one_before_length integer\n
              \@ATTRIBUTE words_since_EOS integer\n
@@ -61,6 +62,9 @@ while (<>) {
    elsif (&classmember($L1, sentence_internal)) {print $file "internal,";} # -1 is sentence internal
    elsif ($L1 =~ /^''/) {print $file "quotes,";} # -1 is quotes
    else {print $file "other,";}
+
+   if ($L1 =~ /[.]/) {print $file "TRUE,";} # -1 contains a fullstop
+   else {print $file "FALSE,";}
 
    print $file length($R1), ",", length($L1), ",", $Llength, ",", $Rlength, ",", $Nspaces, ",", $class, "\n";
 }
