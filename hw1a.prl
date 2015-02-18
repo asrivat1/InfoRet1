@@ -24,7 +24,7 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE two_before_type {fullstop, numeric, other}\n
              \@ATTRIBUTE two_after_fullstop {TRUE, FALSE}\n
              \@ATTRIBUTE one_after_type {lower, capital_common, np, comma, fullstop, numeric, quotes, other}\n
-             \@ATTRIBUTE one_before_type {title, abbrev, internal, quotes, other}\n
+             \@ATTRIBUTE one_before_type {title, abbrev, internal, quotes, time, other}\n
              \@ATTRIBUTE one_before_contains_fullstop {TRUE, FALSE}\n
              \@ATTRIBUTE one_before_capitals integer\n
              \@ATTRIBUTE one_after_length integer\n
@@ -62,6 +62,7 @@ while (<>) {
    elsif (&classmember($L1, abbrevs)) {print $file "abbrev,";} # -1 is abbreviation
    elsif (&classmember($L1, sentence_internal)) {print $file "internal,";} # -1 is sentence internal
    elsif ($L1 =~ /^''/) {print $file "quotes,";} # -1 is quotes
+   elsif (&classmember(lc($L1), timeterms)) {print $file "time,";} # -1 is a time related term
    else {print $file "other,";}
 
    if ($L1 =~ /[.]/) {print $file "TRUE,";} # -1 contains a fullstop
