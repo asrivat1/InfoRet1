@@ -62,7 +62,7 @@ while (<>) {
    elsif (&classmember($L1, abbrevs)) {print $file "abbrev,";} # -1 is abbreviation
    elsif (&classmember($L1, sentence_internal)) {print $file "internal,";} # -1 is sentence internal
    elsif ($L1 =~ /^''/) {print $file "quotes,";} # -1 is quotes
-   elsif (&classmember(lc($L1), timeterms)) {print $file "time,";} # -1 is a time related term
+   elsif (&match($L1, timeterms)) {print $file "time,";} # -1 is a time related term
    else {print $file "other,";}
 
    if ($L1 =~ /[.]/) {print $file "TRUE,";} # -1 contains a fullstop
@@ -73,10 +73,20 @@ while (<>) {
    print $file $capitals, ",", length($R1), ",", length($L1), ",", $Llength, ",", $Rlength, ",", $Nspaces, ",", $class, "\n";
 }
 
-# print results
-# print "### HW1A asrivat1 - OVERALL CORRECT: ", $correct, " = ", 100 * $correct/($correct + $incorrect),
-#      "%\tINCORRECT: ", $incorrect, " = ", 100 * $incorrect/($correct + $incorrect), "%\n";
- 
+sub match
+{
+    local($term, *set) = @_;
+
+    for my $key (keys %set)
+    {
+        if (index($key, lc($term)) != -1)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 ##########################################################
 ## RET - prints full line for errors and keeps score
 ##     - $where indicates the rule number responsible for the classification
