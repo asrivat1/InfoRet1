@@ -6,7 +6,7 @@
 
              @ATTRIBUTE two_after_fullstop {TRUE, FALSE}
 
-             @ATTRIBUTE one_after_type {lower, capital_common, np, comma, fullstop, numeric, quotes, backtick other}
+             @ATTRIBUTE one_after_type {lower, capital_common, np, comma, fullstop, numeric, quotes, backtick, other}
 
              @ATTRIBUTE one_before_type {title, abbrev, internal, quotes, time, other}
 
