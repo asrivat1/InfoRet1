@@ -25,6 +25,7 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE two_after_fullstop {TRUE, FALSE}\n
              \@ATTRIBUTE one_after_type {lower, capital_common, np, comma, fullstop, numeric, quotes, other}\n
              \@ATTRIBUTE one_before_type {title, abbrev, internal, quotes, other}\n
+             \@ATTRIBUTE one_after_length integer\n
              \@ATTRIBUTE one_before_length integer\n
              \@ATTRIBUTE words_since_EOS integer\n
              \@ATTRIBUTE words_until_EOS integer\n
@@ -61,7 +62,7 @@ while (<>) {
    elsif ($L1 =~ /^''/) {print $file "quotes,";} # -1 is quotes
    else {print $file "other,";}
 
-   print $file length($L1), ",", $Llength, ",", $Rlength, ",", $Nspaces, ",", $class, "\n";
+   print $file length($R1), ",", length($L1), ",", $Llength, ",", $Rlength, ",", $Nspaces, ",", $class, "\n";
 }
 
 # print results
