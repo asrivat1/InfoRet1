@@ -23,7 +23,7 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE three_before_numeric {TRUE, FALSE}\n
              \@ATTRIBUTE two_before_type {fullstop, numeric, other}\n
              \@ATTRIBUTE two_after_fullstop {TRUE, FALSE}\n
-             \@ATTRIBUTE one_after_type {lower, capital_common, np, comma, fullstop, numeric, quotes, other}\n
+             \@ATTRIBUTE one_after_type {lower, capital_common, np, comma, fullstop, numeric, quotes, backtick other}\n
              \@ATTRIBUTE one_before_type {title, abbrev, internal, quotes, time, other}\n
              \@ATTRIBUTE one_before_contains_fullstop {TRUE, FALSE}\n
              \@ATTRIBUTE one_before_capitals integer\n
@@ -56,6 +56,7 @@ while (<>) {
    elsif ($R1 =~ /^[.]/) {print $file "fullstop,";} # +1 is fullstop
    elsif ($R1 =~ /^[0-9]/) {print $file "numeric,";} # +1 is numeric
    elsif ($R1 =~ /^''/) {print $file "quotes,";} # +1 is quotation mark
+   elsif ($R1 =~ /^``/) {print $file "backtick,";} # +1 is a backtick pair
    else {print $file "other,";}
 
    if (&classmember($L1, titles)) {print $file "title,";} # -1 is title
