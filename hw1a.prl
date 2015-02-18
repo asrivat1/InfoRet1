@@ -26,6 +26,7 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE one_after_type {lower, capital_common, np, comma, fullstop, numeric, quotes, other}\n
              \@ATTRIBUTE one_before_type {title, abbrev, internal, quotes, other}\n
              \@ATTRIBUTE one_before_contains_fullstop {TRUE, FALSE}\n
+             \@ATTRIBUTE one_before__capitals integer\n
              \@ATTRIBUTE one_after_length integer\n
              \@ATTRIBUTE one_before_length integer\n
              \@ATTRIBUTE words_since_EOS integer\n
@@ -66,7 +67,9 @@ while (<>) {
    if ($L1 =~ /[.]/) {print $file "TRUE,";} # -1 contains a fullstop
    else {print $file "FALSE,";}
 
-   print $file length($R1), ",", length($L1), ",", $Llength, ",", $Rlength, ",", $Nspaces, ",", $class, "\n";
+   $capitals = () = $L1 =~ /[A-Z]/g; # get number of capital letters in -1
+
+   print $file $capitals, ",", length($R1), ",", length($L1), ",", $Llength, ",", $Rlength, ",", $Nspaces, ",", $class, "\n";
 }
 
 # print results
