@@ -26,7 +26,7 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE one_after_type {lower, capital_common, np, comma, fullstop, numeric, quotes, other}\n
              \@ATTRIBUTE one_before_type {title, abbrev, internal, quotes, other}\n
              \@ATTRIBUTE one_before_contains_fullstop {TRUE, FALSE}\n
-             \@ATTRIBUTE one_before__capitals integer\n
+             \@ATTRIBUTE one_before_capitals integer\n
              \@ATTRIBUTE one_after_length integer\n
              \@ATTRIBUTE one_before_length integer\n
              \@ATTRIBUTE words_since_EOS integer\n
