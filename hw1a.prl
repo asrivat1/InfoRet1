@@ -22,7 +22,7 @@ open($file, '>', 'fullstop_data.arff');
 print $file "\@RELATION fullstop\n
              \@ATTRIBUTE three_before_type {numeric, capital, other}\n
              \@ATTRIBUTE two_before_type {fullstop, numeric, other}\n
-             \@ATTRIBUTE two_after_type {fullstop, comma, other}\n
+             \@ATTRIBUTE two_after_fullstop {TRUE, FALSE}\n
              \@ATTRIBUTE one_after_type {lower, capital_common, np, comma, fullstop, numeric, quotes, backtick, other}\n
              \@ATTRIBUTE one_before_type {title, abbrev, internal, quotes, time, other}\n
              \@ATTRIBUTE one_before_contains_fullstop {TRUE, FALSE}\n
@@ -47,9 +47,8 @@ while (<>) {
    elsif ($L2 =~ /^[0-9]/) {print $file "numeric,";} # -2 is numeric
    else {print $file "other,";}
 
-   if ($R2 =~ /^[.]/) {print $file "fullstop,";} # +2 is fullstop
-   elsif ($R2 =~ /^[,]/) {print $file "comma,";} # +2 is comma
-   else {print $file "other,";}
+   if ($R2 =~ /^[.]/) {print $file "TRUE,";} # +2 is fullstop
+   else {print $file "FALSE,";}
 
    if ($R1 =~ /^[a-z]/) {print $file "lower,";} # +1 is lowercase
    elsif (&classmember($R1, unlikely_proper_nouns)) {print $file "capital_common,";} # +1 is capital common
