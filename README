@@ -1,0 +1,35 @@
+HW1 by Akshay Srivatsan
+
+
+Notes on Part 1:
+================
+
+This program is to be run through Weka. Upon running hw1a.prl, you will see the file fullstop_data.arff appear. Run this file through Weka using the following options: J48 -C 0.25 -M 2
+
+In my own testing, I got the following results from 10-fold cross validation on the provided training data:
+
+=== Summary ===
+
+Correctly Classified Instances       44930               99.8444 %
+Incorrectly Classified Instances        70                0.1556 %
+Kappa statistic                          0.9907
+Mean absolute error                      0.0025
+Root mean squared error                  0.0385
+Relative absolute error                  1.5262 %
+Root relative squared error             13.348  %
+Total Number of Instances            45000     
+
+=== Detailed Accuracy By Class ===
+
+TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+0.999     0.009      0.999     0.999     0.999      0.999    EOS
+0.991     0.001      0.992     0.991     0.992      0.999    NEOS
+Weighted Avg.    0.998     0.008      0.998     0.998     0.998      0.999
+
+=== Confusion Matrix ===
+
+a     b   <-- classified as
+40844    33 |     a = EOS
+37  4086 |     b = NEOS
+
+

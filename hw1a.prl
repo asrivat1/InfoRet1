@@ -20,9 +20,9 @@ $L="/home/1/yarowsky/cs466/hw1/classes";
 # print the first chunk of the ARFF file
 open($file, '>', 'fullstop_data.arff');
 print $file "\@RELATION fullstop\n
-             \@ATTRIBUTE three_before_type {numeric, capitalized, other}\n
+             \@ATTRIBUTE three_before_type {numeric, capital, other}\n
              \@ATTRIBUTE two_before_type {fullstop, numeric, other}\n
-             \@ATTRIBUTE two_after_fullstop {TRUE, FALSE}\n
+             \@ATTRIBUTE two_after_type {fullstop, comma, other}\n
              \@ATTRIBUTE one_after_type {lower, capital_common, np, comma, fullstop, numeric, quotes, backtick, other}\n
              \@ATTRIBUTE one_before_type {title, abbrev, internal, quotes, time, other}\n
              \@ATTRIBUTE one_before_contains_fullstop {TRUE, FALSE}\n
@@ -40,15 +40,16 @@ while (<>) {
    ($class,$id,$L3,$L2,$L1,$C,$R1,$R2,$R3,$Llength,$Rlength,$Nspaces) = @words;
 
    if ($L3 =~ /^[0-9]/) {print $file "numeric,";} # -3 is numeric
-   elsif ($L3 =~ /^[A-Z]/) {print $file "capitalized,";} # -3 is capitalized
+   elsif ($L3 =~ /^[A-Z]/) {print $file "capital,";} # -3 is capitalized
    else {print $file "other,";}
 
    if ($L2 =~ /^[.]/) {print $file "fullstop,";} # -2 is fullstop
    elsif ($L2 =~ /^[0-9]/) {print $file "numeric,";} # -2 is numeric
    else {print $file "other,";}
 
-   if ($R2 =~ /^[.]/) {print $file "TRUE,";} # +2 is fullstop
-   else {print $file "FALSE,";}
+   if ($R2 =~ /^[.]/) {print $file "fullstop,";} # +2 is fullstop
+   elsif ($R2 =~ /^[,]/) {print $file "comma,";} # +2 is comma
+   else {print $file "other,";}
 
    if ($R1 =~ /^[a-z]/) {print $file "lower,";} # +1 is lowercase
    elsif (&classmember($R1, unlikely_proper_nouns)) {print $file "capital_common,";} # +1 is capital common
