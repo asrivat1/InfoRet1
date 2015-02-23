@@ -43,7 +43,7 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE email {TRUE, FALSE} \n
              \@ATTRIBUTE dashes real \n
              \@ATTRIBUTE prop_spaces real \n
-             \@ATTRIBUTE prop_hanging real \n
+             \@ATTRIBUTE hanging integer \n
              \@ATTRIBUTE class {NNHEAD, QUOTED, SIG, TABLE, GRAPHIC, HEADL, ADDRESS, ITEM, PTEXT}\n
              \@DATA\n";
 
@@ -151,7 +151,7 @@ sub process_segment {
     print $file $email, ",";
     print $file $dashes / $numb_lines, ",";
     print $file $spaces / $total_length, ",";
-    print $file $hanging / $numb_lines, ",";
+    print $file $hanging, ",";
     print $file $real_lines[0], "\n";
 }
 
