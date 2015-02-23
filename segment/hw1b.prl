@@ -43,6 +43,7 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE email {TRUE, FALSE} \n
              \@ATTRIBUTE dashes real \n
              \@ATTRIBUTE prop_spaces real \n
+             \@ATTRIBUTE prop_hanging real \n
              \@ATTRIBUTE class {NNHEAD, QUOTED, SIG, TABLE, GRAPHIC, HEADL, ADDRESS, ITEM, PTEXT}\n
              \@DATA\n";
 
@@ -97,6 +98,7 @@ sub process_segment {
     $numbered = 0;
     $email = "FALSE";
     $dashes = 0;
+    $hanging = 0;
 
 	for ($cnt = 0; $cnt < scalar @test_lines; $cnt++)
     {
@@ -120,6 +122,19 @@ sub process_segment {
         if ($test_lines[$cnt] =~ /.+\@.+\..+/) { $email = "TRUE"; }
 
         if ($test_lines[$cnt] =~ /^( *)(\t*)\-/) { $dashes += 1; }
+
+        if ($cnt > 0 && length(($test_lines[$cnt] =~ /^( *)/)[0]) >
+                length(($test_lines[$cnt - 1] =~ /^( *)/)[0]))
+        {
+            $hanging += 1;
+        }
+
+        if ($cnt > 0 && length(($test_lines[$cnt] =~ /^(\t*)/)[0]) >
+                length(($test_lines[$cnt - 1] =~ /^(\t*)/)[0]))
+        {
+            $hanging += 1;
+        }
+
 	}
 
     print $file $numb_lines, ",";
@@ -136,6 +151,7 @@ sub process_segment {
     print $file $email, ",";
     print $file $dashes / $numb_lines, ",";
     print $file $spaces / $total_length, ",";
+    print $file $hanging / $numb_lines, ",";
     print $file $real_lines[0], "\n";
 }
 
