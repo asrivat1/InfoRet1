@@ -48,6 +48,7 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE allcaps integer \n
              \@ATTRIBUTE US_city {TRUE, FALSE} \n
              \@ATTRIBUTE inner_tab integer \n
+             \@ATTRIBUTE avg_num_words real \n
              \@ATTRIBUTE class {NNHEAD, QUOTED, SIG, TABLE, GRAPHIC, HEADL, ADDRESS, ITEM, PTEXT}\n
              \@DATA\n";
 
@@ -107,6 +108,7 @@ sub process_segment {
     $allcaps = 0;
     $US_city = "FALSE";
     $inner_tab = 0;
+    $num_words = 0;
 
 	for ($cnt = 0; $cnt < scalar @test_lines; $cnt++)
     {
@@ -150,6 +152,8 @@ sub process_segment {
         if ($test_lines[$cnt] =~ /.+, [A-Z][A-Z] [0-9]{5}/) { $US_city = "TRUE"; }
         
         if ($test_lines[$cnt] =~ /^.+\t+/) { $inner_tab += 1; }
+
+        $num_words += scalar split(' ', $test_lines[$cnt]);
 	}
 
     print $file $numb_lines, ",";
@@ -171,6 +175,7 @@ sub process_segment {
     print $file $allcaps, ",";
     print $file $US_city, ",";
     print $file $inner_tab, ",";
+    print $file $num_words / $numb_lines, ",";
     print $file $real_lines[0], "\n";
 }
 
