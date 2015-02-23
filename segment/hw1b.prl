@@ -31,6 +31,8 @@ open($file, '>', 'cat_data.arff');
 print $file "\@RELATION fullstop\n
              \@ATTRIBUTE length integer \n
              \@ATTRIBUTE dist_BOS integer \n
+             \@ATTRIBUTE init_spaces integer \n
+             \@ATTRIBUTE init_tabs integer \n
              \@ATTRIBUTE class {NNHEAD, QUOTED, SIG, TABLE, GRAPHIC, HEADL, ADDRESS, ITEM, PTEXT}\n
              \@DATA\n";
 
@@ -77,6 +79,13 @@ sub process_segment {
 	for ($cnt = 0; $cnt < scalar @test_lines; $cnt++) {
         print $file length($test_lines[$cnt]), ",";
         print $file $dist_BOS, ",";
+
+        $spaces = length(($test_lines[$cnt] =~ /^( *)/)[0]);
+        print $file $spaces, ",";
+
+        $tabs = length(($test_lines[$cnt] =~ /^(\t*)/)[0]);
+        print $file $tabs, ",";
+
         print $file $real_lines[$cnt], "\n";
 	}
 }
