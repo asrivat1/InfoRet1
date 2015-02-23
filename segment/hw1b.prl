@@ -42,7 +42,7 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE numbered real \n
              \@ATTRIBUTE email {TRUE, FALSE} \n
              \@ATTRIBUTE dashes real \n
-             \@ATTRIBUTE avg_length real \n
+             \@ATTRIBUTE prop_spaces real \n
              \@ATTRIBUTE class {NNHEAD, QUOTED, SIG, TABLE, GRAPHIC, HEADL, ADDRESS, ITEM, PTEXT}\n
              \@DATA\n";
 
@@ -135,7 +135,7 @@ sub process_segment {
     print $file $numbered / $numb_lines, ",";
     print $file $email, ",";
     print $file $dashes / $numb_lines, ",";
-    print $file $total_length / $numb_lines, ",";
+    print $file $spaces / $total_length, ",";
     print $file $real_lines[0], "\n";
 }
 
