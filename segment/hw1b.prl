@@ -47,6 +47,7 @@ print $file "\@RELATION segment\n
              \@ATTRIBUTE prop_cap real \n
              \@ATTRIBUTE allcaps integer \n
              \@ATTRIBUTE US_city {TRUE, FALSE} \n
+             \@ATTRIBUTE first_line_non_word {TRUE, FALSE} \n
              \@ATTRIBUTE class {NNHEAD, QUOTED, SIG, TABLE, GRAPHIC, HEADL, ADDRESS, ITEM, PTEXT}\n
              \@DATA\n";
 
@@ -105,6 +106,7 @@ sub process_segment {
     $capital = 0;
     $allcaps = 0;
     $US_city = "FALSE";
+    $first_non_word = "FALSE";
 
 	for ($cnt = 0; $cnt < scalar @test_lines; $cnt++)
     {
@@ -149,6 +151,8 @@ sub process_segment {
         
 	}
 
+    if ($test_lines[0] =~ /^[\W ]*$/) { $first_non_word = "TRUE"; }
+
     print $file $numb_lines, ",";
     print $file $total_length, ",";
     print $file $dist_BOS, ",";
@@ -167,6 +171,7 @@ sub process_segment {
     print $file $capital / $numb_lines, ",";
     print $file $allcaps, ",";
     print $file $US_city, ",";
+    print $file $first_non_word, ",";
     print $file $real_lines[0], "\n";
 }
 
