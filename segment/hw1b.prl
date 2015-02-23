@@ -112,8 +112,8 @@ sub process_segment {
 
         $tabs += length(($test_lines[$cnt] =~ /^(\t*)/)[0]);
 
-        if ($test_lines[$cnt] =~ /^[1-9]/) { $numeric += 1; }
-        elsif ($test_lines[$cnt] =~ /^[A-Za-z]/) { $alpha += 1; }
+        if ($test_lines[$cnt] =~ /^(\s)?[1-9]/) { $numeric += 1; }
+        elsif ($test_lines[$cnt] =~ /^(\s)?[A-Za-z]/) { $alpha += 1; }
 
         $strange += () = $test_lines[$cnt] =~ /[\W \toO]/g;
         $strange = 0 unless $strange;
