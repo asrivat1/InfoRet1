@@ -47,6 +47,7 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE prop_cap real \n
              \@ATTRIBUTE allcaps integer \n
              \@ATTRIBUTE US_city {TRUE, FALSE} \n
+             \@ATTRIBUTE letters_per_line real \n
              \@ATTRIBUTE class {NNHEAD, QUOTED, SIG, TABLE, GRAPHIC, HEADL, ADDRESS, ITEM, PTEXT}\n
              \@DATA\n";
 
@@ -105,6 +106,7 @@ sub process_segment {
     $capital = 0;
     $allcaps = 0;
     $US_city = "FALSE";
+    $letters = 0;
 
 	for ($cnt = 0; $cnt < scalar @test_lines; $cnt++)
     {
@@ -112,8 +114,8 @@ sub process_segment {
 
         $tabs += length(($test_lines[$cnt] =~ /^(\t*)/)[0]);
 
-        if ($test_lines[$cnt] =~ /^( *)[1-9]/) { $numeric += 1; }
-        elsif ($test_lines[$cnt] =~ /^[A-Za-z]/) { $alpha += 1; }
+        if ($test_lines[$cnt] =~ /^(\s*)[1-9]/) { $numeric += 1; }
+        elsif ($test_lines[$cnt] =~ /^(\s*)[A-Za-z]/) { $alpha += 1; }
 
         $strange += () = $test_lines[$cnt] =~ /[\W \toO]/g;
         $strange = 0 unless $strange;
@@ -147,6 +149,7 @@ sub process_segment {
 
         if ($test_lines[$cnt] =~ /.+, [A-Z][A-Z] [0-9]{5}/) { $US_city = "TRUE"; }
         
+        $letters += () = $test_lines[$cnt] =~ /[A-Za-z ]/g;
 	}
 
     print $file $numb_lines, ",";
@@ -167,6 +170,7 @@ sub process_segment {
     print $file $capital / $numb_lines, ",";
     print $file $allcaps, ",";
     print $file $US_city, ",";
+    print $file $letters / $numb_lines, ",";
     print $file $real_lines[0], "\n";
 }
 
