@@ -33,7 +33,8 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE dist_BOS integer \n
              \@ATTRIBUTE init_spaces integer \n
              \@ATTRIBUTE init_tabs integer \n
-             \@ATTRIBUTE starts_with {numeric, alpha, other}
+             \@ATTRIBUTE starts_with {numeric, alpha, other} \n
+             \@ATTRIBUTE proportion_strange real \n
              \@ATTRIBUTE class {NNHEAD, QUOTED, SIG, TABLE, GRAPHIC, HEADL, ADDRESS, ITEM, PTEXT}\n
              \@DATA\n";
 
@@ -90,6 +91,10 @@ sub process_segment {
         if ($test_lines[$cnt] =~ /^[1-9]/) { print $file "numeric,"; }
         elsif ($test_lines[$cnt] =~ /^[A-Za-z]/) { print $file "alpha,"; }
         else { print $file "other,"; }
+
+        $strange = () = $test_lines[$cnt] =~ /[\W \toO]/g;
+        $strange = 0 unless $strange;
+        print $file ($strange / length($test_lines[$cnt])), ",";
 
         print $file $real_lines[$cnt], "\n";
 	}
