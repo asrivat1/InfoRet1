@@ -44,6 +44,7 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE dashes real \n
              \@ATTRIBUTE prop_spaces real \n
              \@ATTRIBUTE hanging integer \n
+             \@ATTRIBUTE avg_num_words real \n
              \@ATTRIBUTE class {NNHEAD, QUOTED, SIG, TABLE, GRAPHIC, HEADL, ADDRESS, ITEM, PTEXT}\n
              \@DATA\n";
 
@@ -99,6 +100,7 @@ sub process_segment {
     $email = "FALSE";
     $dashes = 0;
     $hanging = 0;
+    $num_words = 0;
 
 	for ($cnt = 0; $cnt < scalar @test_lines; $cnt++)
     {
@@ -135,6 +137,7 @@ sub process_segment {
             $hanging += 1;
         }
 
+        $num_words += split(/ /, $test_lines[$cnt]);
 	}
 
     print $file $numb_lines, ",";
@@ -152,6 +155,7 @@ sub process_segment {
     print $file $dashes / $numb_lines, ",";
     print $file $spaces / $total_length, ",";
     print $file $hanging, ",";
+    print $file $num_words / $numb_lines, ",";
     print $file $real_lines[0], "\n";
 }
 
