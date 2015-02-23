@@ -47,6 +47,7 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE prop_cap real \n
              \@ATTRIBUTE allcaps integer \n
              \@ATTRIBUTE US_city {TRUE, FALSE} \n
+             \@ATTRIBUTE inner_tab integer \n
              \@ATTRIBUTE class {NNHEAD, QUOTED, SIG, TABLE, GRAPHIC, HEADL, ADDRESS, ITEM, PTEXT}\n
              \@DATA\n";
 
@@ -105,6 +106,7 @@ sub process_segment {
     $capital = 0;
     $allcaps = 0;
     $US_city = "FALSE";
+    $inner_tab = 0;
 
 	for ($cnt = 0; $cnt < scalar @test_lines; $cnt++)
     {
@@ -146,7 +148,8 @@ sub process_segment {
         if ($test_lines[$cnt] =~ /^(\s*)[A-Z\s0-9\.:\-]+$/) { $allcaps += 1; }
 
         if ($test_lines[$cnt] =~ /.+, [A-Z][A-Z] [0-9]{5}/) { $US_city = "TRUE"; }
-
+        
+        if ($test_lines[$cnt] =~ /^.+\t+/) { $inner_tab += 1; }
 	}
 
     print $file $numb_lines, ",";
@@ -167,6 +170,7 @@ sub process_segment {
     print $file $capital / $numb_lines, ",";
     print $file $allcaps, ",";
     print $file $US_city, ",";
+    print $file $inner_tab, ",";
     print $file $real_lines[0], "\n";
 }
 
