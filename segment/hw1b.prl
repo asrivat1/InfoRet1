@@ -47,7 +47,7 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE prop_cap real \n
              \@ATTRIBUTE allcaps integer \n
              \@ATTRIBUTE US_city {TRUE, FALSE} \n
-             \@ATTRIBUTE phone {TRUE, FALSE} \n
+             \@ATTRIBUTE address_words integer \n
              \@ATTRIBUTE class {NNHEAD, QUOTED, SIG, TABLE, GRAPHIC, HEADL, ADDRESS, ITEM, PTEXT}\n
              \@DATA\n";
 
@@ -106,7 +106,7 @@ sub process_segment {
     $capital = 0;
     $allcaps = 0;
     $US_city = "FALSE";
-    $phone = "FALSE";
+    $add_words = 0;
 
 	for ($cnt = 0; $cnt < scalar @test_lines; $cnt++)
     {
@@ -149,7 +149,7 @@ sub process_segment {
 
         if ($test_lines[$cnt] =~ /.+, [A-Z][A-Z] [0-9]{5}/) { $US_city = "TRUE"; }
         
-        if ($test_lines[$cnt] =~ /\([0-9]{3}\)[0-9]{3}\-[0-9]{4}/) { $phone = "TRUE"; }
+        $add_words += () = $test_lines[$cnt] =~ /((p|P)hone)|((E|e)\-?mail)|((F|f)ax)/g;
 	}
 
     print $file $numb_lines, ",";
@@ -170,7 +170,7 @@ sub process_segment {
     print $file $capital / $numb_lines, ",";
     print $file $allcaps, ",";
     print $file $US_city, ",";
-    print $file $phone, ",";
+    print $file $add_words, ",";
     print $file $real_lines[0], "\n";
 }
 
