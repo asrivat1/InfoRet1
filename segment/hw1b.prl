@@ -38,6 +38,7 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE prop_start_alpha real \n
              \@ATTRIBUTE proportion_strange real \n
              \@ATTRIBUTE first_ends_colon {TRUE, FALSE} \n
+             \@ATTRIBUTE num_quoted integer \n
              \@ATTRIBUTE class {NNHEAD, QUOTED, SIG, TABLE, GRAPHIC, HEADL, ADDRESS, ITEM, PTEXT}\n
              \@DATA\n";
 
@@ -88,6 +89,7 @@ sub process_segment {
     $strange = 0;
     $total_length = 0;
     $colon = "FALSE";
+    $quoted = 0;
 
 	for ($cnt = 0; $cnt < scalar @test_lines; $cnt++)
     {
@@ -102,7 +104,9 @@ sub process_segment {
         $strange = 0 unless $strange;
         $total_length += length($test_lines[$cnt]);
 
-        if ($test_lines[$cnt] =~ /[:\-]$/) { $colon = "TRUE"; }
+        if ($test_lines[$cnt] =~ /[:]$/) { $colon = "TRUE"; }
+
+        if ($test_lines[$cnt] =~ /^( *)(\t*)(.{0,3})(>|:)/) { $quoted += 1; }
 	}
 
     print $file $numb_lines, ",";
@@ -114,6 +118,7 @@ sub process_segment {
     print $file $alpha / $numb_lines, ",";
     print $file $strange / $total_length, ",";
     print $file $colon, ",";
+    print $file $quoted, ",";
     print $file $real_lines[0], "\n";
 }
 
