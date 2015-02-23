@@ -28,7 +28,7 @@ my $dist_BOS  = 0;
 
 # print the first chunk of the ARFF file
 open($file, '>', 'cat_data.arff');
-print $file "\@RELATION fullstop\n
+print $file "\@RELATION segment\n
              \@ATTRIBUTE numb_lines integer\n
              \@ATTRIBUTE length integer \n
              \@ATTRIBUTE dist_BOS integer \n

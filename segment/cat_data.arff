@@ -1,4 +1,4 @@
-@RELATION fullstop
+@RELATION segment
 
              @ATTRIBUTE numb_lines integer
 
