@@ -1,6 +1,6 @@
 @RELATION fullstop
 
-             @ATTRIBUTE numb_lines 
+             @ATTRIBUTE numb_lines integer
 
              @ATTRIBUTE length integer 
 
