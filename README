@@ -33,3 +33,48 @@ Weighted Avg.   0.998     0.008      0.998     0.998     0.998      0.999
 37     4086 |     b = NEOS
 
 
+Notes on Part 2:
+================
+
+This program is to be run through Weka. Upon running hw1a.prl, you will see the file cat_data.arff appear. Run this file through Weka using the following options: RandomForest -I 100 -K 0 -S 1
+
+In my own testing, I got the following results from 10-fold cross validation on the provided training data:
+
+=== Summary ===
+
+Correctly Classified Instances         924               93.4277 %
+Incorrectly Classified Instances        65                6.5723 %
+Kappa statistic                          0.9033
+Mean absolute error                      0.0297
+Root mean squared error                  0.1106
+Relative absolute error                 19.3673 %
+Root relative squared error             40.0039 %
+Total Number of Instances              989     
+
+=== Detailed Accuracy By Class ===
+
+TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+0.992     0          1         0.992     0.996      1        NNHEAD
+0.977     0.007      0.966     0.977     0.972      0.999    QUOTED
+0.819     0.014      0.819     0.819     0.819      0.992    SIG
+0.828     0.003      0.889     0.828     0.857      0.998    TABLE
+0.778     0          1         0.778     0.875      0.997    GRAPHIC
+0.818     0.004      0.9       0.818     0.857      0.993    HEADL
+0.545     0.001      0.857     0.545     0.667      0.996    ADDRESS
+0.615     0.003      0.842     0.615     0.711      0.94     ITEM
+0.966     0.072      0.932     0.966     0.949      0.985    PTEXT
+Weighted Avg.    0.934     0.039      0.933     0.934     0.933      0.99 
+
+=== Confusion Matrix ===
+
+  a   b   c   d   e   f   g   h   i   <-- classified as
+120   1   0   0   0   0   0   0   0 |   a = NNHEAD
+  0 173   0   0   0   0   0   0   4 |   b = QUOTED
+  0   2  59   0   0   1   0   0  10 |   c = SIG
+  0   0   0  24   0   0   0   0   5 |   d = TABLE
+  0   0   0   2   7   0   0   0   0 |   e = GRAPHIC
+  0   0   3   0   0  36   0   0   5 |   f = HEADL
+  0   1   1   0   0   1   6   0   2 |   g = ADDRESS
+  0   0   1   0   0   0   0  16   9 |   h = ITEM
+  0   2   8   1   0   2   1   3 483 |   i = PTEXT
+
