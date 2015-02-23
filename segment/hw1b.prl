@@ -48,7 +48,7 @@ print $file "\@RELATION segment\n
              \@ATTRIBUTE allcaps integer \n
              \@ATTRIBUTE US_city {TRUE, FALSE} \n
              \@ATTRIBUTE prop_punctuation real \n
-             \@ATTRIBUTE pror_init_colon real \n
+             \@ATTRIBUTE init_colons integer \n
              \@ATTRIBUTE class {NNHEAD, QUOTED, SIG, TABLE, GRAPHIC, HEADL, ADDRESS, ITEM, PTEXT}\n
              \@DATA\n";
 
@@ -176,7 +176,7 @@ sub process_segment {
     print $file $allcaps, ",";
     print $file $US_city, ",";
     print $file $punctuation / $total_length, ",";
-    print $file $init_colon / $numb_lines, ",";
+    print $file $init_colon, ",";
     print $file $real_lines[0], "\n";
 }
 
