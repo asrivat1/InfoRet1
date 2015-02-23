@@ -47,7 +47,7 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE prop_cap real \n
              \@ATTRIBUTE allcaps integer \n
              \@ATTRIBUTE US_city {TRUE, FALSE} \n
-             \@ATTRIBUTE letters_per_line real \n
+             \@ATTRIBUTE prop_letters real \n
              \@ATTRIBUTE class {NNHEAD, QUOTED, SIG, TABLE, GRAPHIC, HEADL, ADDRESS, ITEM, PTEXT}\n
              \@DATA\n";
 
@@ -170,7 +170,7 @@ sub process_segment {
     print $file $capital / $numb_lines, ",";
     print $file $allcaps, ",";
     print $file $US_city, ",";
-    print $file $letters / $numb_lines, ",";
+    print $file $letters / $total_length, ",";
     print $file $real_lines[0], "\n";
 }
 
