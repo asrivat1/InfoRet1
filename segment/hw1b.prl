@@ -137,7 +137,7 @@ sub process_segment {
             $hanging += 1;
         }
 
-        $num_words += split(/ /, $test_lines[$cnt]);
+        $num_words += split(/\s/, $test_lines[$cnt]);
 	}
 
     print $file $numb_lines, ",";
