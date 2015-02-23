@@ -37,6 +37,7 @@ print $file "\@RELATION fullstop\n
              \@ATTRIBUTE prop_start_numeric real \n
              \@ATTRIBUTE prop_start_alpha real \n
              \@ATTRIBUTE proportion_strange real \n
+             \@ATTRIBUTE first_ends_colon {TRUE, FALSE} \n
              \@ATTRIBUTE class {NNHEAD, QUOTED, SIG, TABLE, GRAPHIC, HEADL, ADDRESS, ITEM, PTEXT}\n
              \@DATA\n";
 
@@ -86,9 +87,10 @@ sub process_segment {
     $alpha = 0;
     $strange = 0;
     $total_length = 0;
+    $colon = "FALSE";
 
-	for ($cnt = 0; $cnt < scalar @test_lines; $cnt++) {
-
+	for ($cnt = 0; $cnt < scalar @test_lines; $cnt++)
+    {
         $spaces += length(($test_lines[$cnt] =~ /^( *)/)[0]);
 
         $tabs += length(($test_lines[$cnt] =~ /^(\t*)/)[0]);
@@ -99,15 +101,19 @@ sub process_segment {
         $strange += () = $test_lines[$cnt] =~ /[\W \toO]/g;
         $strange = 0 unless $strange;
         $total_length += length($test_lines[$cnt]);
+
+        if ($test_lines[$cnt] =~ /[:\-]$/) { $colon = "TRUE"; }
 	}
-        print $file $numb_lines, ",";
-        print $file $total_length, ",";
-        print $file $dist_BOS, ",";
-        print $file $spaces, ",";
-        print $file $tabs, ",";
-        print $file $numeric / $numb_lines, ",";
-        print $file $alpha / $numb_lines, ",";
-        print $file $strange / $total_length, ",";
-        print $file $real_lines[0], "\n";
+
+    print $file $numb_lines, ",";
+    print $file $total_length, ",";
+    print $file $dist_BOS, ",";
+    print $file $spaces, ",";
+    print $file $tabs, ",";
+    print $file $numeric / $numb_lines, ",";
+    print $file $alpha / $numb_lines, ",";
+    print $file $strange / $total_length, ",";
+    print $file $colon, ",";
+    print $file $real_lines[0], "\n";
 }
 
