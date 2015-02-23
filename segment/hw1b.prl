@@ -29,11 +29,13 @@ my $dist_BOS  = 0;
 # print the first chunk of the ARFF file
 open($file, '>', 'cat_data.arff');
 print $file "\@RELATION fullstop\n
+             \@ATTRIBUTE numb_lines \n
              \@ATTRIBUTE length integer \n
              \@ATTRIBUTE dist_BOS integer \n
              \@ATTRIBUTE init_spaces integer \n
              \@ATTRIBUTE init_tabs integer \n
-             \@ATTRIBUTE starts_with {numeric, alpha, other} \n
+             \@ATTRIBUTE prop_start_numeric real \n
+             \@ATTRIBUTE prop_start_alpha real \n
              \@ATTRIBUTE proportion_strange real \n
              \@ATTRIBUTE class {NNHEAD, QUOTED, SIG, TABLE, GRAPHIC, HEADL, ADDRESS, ITEM, PTEXT}\n
              \@DATA\n";
@@ -78,25 +80,34 @@ while (defined ($line = <STDIN>))
 
 sub process_segment {
     my $cnt;
+    $spaces = 0;
+    $tabs = 0;
+    $numeric = 0;
+    $alpha = 0;
+    $strange = 0;
+    $total_length = 0;
+
 	for ($cnt = 0; $cnt < scalar @test_lines; $cnt++) {
-        print $file length($test_lines[$cnt]), ",";
-        print $file $dist_BOS, ",";
 
-        $spaces = length(($test_lines[$cnt] =~ /^( *)/)[0]);
-        print $file $spaces, ",";
+        $spaces += length(($test_lines[$cnt] =~ /^( *)/)[0]);
 
-        $tabs = length(($test_lines[$cnt] =~ /^(\t*)/)[0]);
-        print $file $tabs, ",";
+        $tabs += length(($test_lines[$cnt] =~ /^(\t*)/)[0]);
 
-        if ($test_lines[$cnt] =~ /^( *)[1-9]/) { print $file "numeric,"; }
-        elsif ($test_lines[$cnt] =~ /^[A-Za-z]/) { print $file "alpha,"; }
-        else { print $file "other,"; }
+        if ($test_lines[$cnt] =~ /^( *)[1-9]/) { $numeric += 1; }
+        elsif ($test_lines[$cnt] =~ /^[A-Za-z]/) { $alpha += 1; }
 
-        $strange = () = $test_lines[$cnt] =~ /[\W \toO]/g;
+        $strange += () = $test_lines[$cnt] =~ /[\W \toO]/g;
         $strange = 0 unless $strange;
-        print $file ($strange / length($test_lines[$cnt])), ",";
-
-        print $file $real_lines[$cnt], "\n";
+        $total_length += length($test_lines[$cnt]);
 	}
+        print $file $numb_lines, ",";
+        print $file $total_length, ",";
+        print $file $dist_BOS, ",";
+        print $file $spaces, ",";
+        print $file $tabs, ",";
+        print $file $numeric / $numb_lines, ",";
+        print $file $alpha / $numb_lines, ",";
+        print $file $strange / $total_length, ",";
+        print $file $real_lines[0], "\n";
 }
 
