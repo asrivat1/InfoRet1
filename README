@@ -21,15 +21,15 @@ Total Number of Instances            45000
 
 === Detailed Accuracy By Class ===
 
-TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
-0.999     0.009      0.999     0.999     0.999      0.999    EOS
-0.991     0.001      0.992     0.991     0.992      0.999    NEOS
-Weighted Avg.    0.998     0.008      0.998     0.998     0.998      0.999
+                TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                0.999     0.009      0.999     0.999     0.999      0.999    EOS
+                0.991     0.001      0.992     0.991     0.992      0.999    NEOS
+Weighted Avg.   0.998     0.008      0.998     0.998     0.998      0.999
 
 === Confusion Matrix ===
 
-a     b   <-- classified as
+    a     b   <-- classified as
 40844    33 |     a = EOS
-37  4086 |     b = NEOS
+37     4086 |     b = NEOS
 
 

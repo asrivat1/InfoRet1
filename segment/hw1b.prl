@@ -1,0 +1,83 @@
+#!/usr/local/bin/perl -w
+
+############################################################
+##  seg_examp1.prl
+##
+##  seg_examp1.prl < segment.data.train
+## 
+##
+##  Example of how one may begin a simple version of this
+##  program. Lines of text are read into a @test_lines array
+##  of lines (with length measured in $numb_lines) until a 
+##  blank line is reached. Then the lines in the previous 
+##  segment are processed.  The array @real_lines stores the
+##  values of the correct classifications for the given in-
+##  put data, useful for comparison with the segment class-
+##  ifications chosen by the program.
+############################################################
+
+my @test_lines = ( );    # the current line that we are testing
+my @real_lines = ( );    # the correct classification for the current line
+my $numb_lines = 0;      # the number of lines in the block that we testing
+
+my $correct   = 0;       # number of correct classifications
+my $incorrect = 0;       # number of incorrect classifications
+my $line      = undef;
+my $prev_blank = 0;
+my $dist_BOS  = 0;
+
+# print the first chunk of the ARFF file
+open($file, '>', 'cat_data.arff');
+print $file "\@RELATION fullstop\n
+             \@ATTRIBUTE length integer \n
+             \@ATTRIBUTE dist_BOS integer \n
+             \@ATTRIBUTE class {NNHEAD, QUOTED, SIG, TABLE, GRAPHIC, HEADL, ADDRESS, ITEM, PTEXT}\n
+             \@DATA\n";
+
+while (defined ($line = <STDIN>))
+{
+    chomp $line;
+
+    if ($line =~ /^#BLANK#/)
+    {
+        &process_segment if $numb_lines;     # if we are at a blank line then
+                                                 # it is time to process the pre-
+                                                 # vious block
+
+        @test_lines  = ( );   # make sure that we clear memory here or else
+        @real_lines  = ( );   #  these arrays may hold old data which will
+        $numb_lines  = 0;     #  screw up calculations of their length
+
+        # check if EOS
+        if ($prev_blank)
+        {
+            $dist_BOS = 0;
+        }
+        $prev_blank = 1;
+    }
+    else
+    {
+        ($test_lines[ $numb_lines ]) = ($line =~ m/^[^\t]+\t(.*)/);
+        ($real_lines[ $numb_lines ]) = ($line =~ m/^([^\t]+)\t/  );
+
+        $numb_lines += 1;
+        $prev_blank = 0;
+        $dist_BOS += 1;
+    }
+}
+
+############################################################
+## Process segments by applying specialized detectors/
+## classifiers to the array of the text lines in the segment 
+############################################################
+
+
+sub process_segment {
+    my $cnt;
+	for ($cnt = 0; $cnt < scalar @test_lines; $cnt++) {
+        print $file length($test_lines[$cnt]), ",";
+        print $file $dist_BOS, ",";
+        print $file $real_lines[$cnt], "\n";
+	}
+}
+
