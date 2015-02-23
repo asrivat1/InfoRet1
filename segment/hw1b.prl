@@ -88,7 +88,7 @@ sub process_segment {
         $tabs = length(($test_lines[$cnt] =~ /^(\t*)/)[0]);
         print $file $tabs, ",";
 
-        if ($test_lines[$cnt] =~ /^[1-9]/) { print $file "numeric,"; }
+        if ($test_lines[$cnt] =~ /^( *)[1-9]/) { print $file "numeric,"; }
         elsif ($test_lines[$cnt] =~ /^[A-Za-z]/) { print $file "alpha,"; }
         else { print $file "other,"; }
 
