@@ -110,43 +110,57 @@ sub process_segment {
 
 	for ($cnt = 0; $cnt < scalar @test_lines; $cnt++)
     {
+        # count the number of spaces the line starts with
         $spaces += length(($test_lines[$cnt] =~ /^( *)/)[0]);
 
+        # count the number of tabs the line starts with
         $tabs += length(($test_lines[$cnt] =~ /^(\t*)/)[0]);
 
+        # check if the first char is numeric or alphabetic
         if ($test_lines[$cnt] =~ /^( *)[0-9]/) { $numeric += 1; }
         elsif ($test_lines[$cnt] =~ /^[A-Za-z]/) { $alpha += 1; }
 
+        # count the number of strange characters (symbols and other ASCII art things)
         $strange += () = $test_lines[$cnt] =~ /[\W \toO]/g;
         $strange = 0 unless $strange;
+
+        # count the total length of the segment
         $total_length += length($test_lines[$cnt]);
 
+        # check if the line ends with a colon
         if ($test_lines[$cnt] =~ /[:]$/) { $colon = "TRUE"; }
 
+        # check if we have a common beginning to a quote
         if ($test_lines[$cnt] =~ /^( *)(\t*)(.{0,3})(>|:)/) { $quoted += 1; }
 
+        # count the number of lines that start with a numbering pattern
         if ($test_lines[$cnt] =~ /^( *)(\t*)\(?(([0-9]+)|([A-Za-z]+))(.|)/) { $numbered += 1; }
 
+        # check for the presence of an email
         if ($test_lines[$cnt] =~ /.+\@.+\..+/) { $email = "TRUE"; }
 
+        # count the number of lines starting with hyphens
         if ($test_lines[$cnt] =~ /^( *)(\t*)\-/) { $dashes += 1; }
 
+        # count the number of hanging lines
         if ($cnt > 0 && length(($test_lines[$cnt] =~ /^( *)/)[0]) >
                 length(($test_lines[$cnt - 1] =~ /^( *)/)[0]))
         {
             $hanging += 1;
         }
-
         if ($cnt > 0 && length(($test_lines[$cnt] =~ /^(\t*)/)[0]) >
                 length(($test_lines[$cnt - 1] =~ /^(\t*)/)[0]))
         {
             $hanging += 1;
         }
 
+        # count the number of lines that start with capital letters
         if ($test_lines[$cnt] =~ /^(\s*)[A-Z]/) { $capital += 1; }
 
+        # count the numer of lines that are all caps
         if ($test_lines[$cnt] =~ /^(\s*)[A-Z\s0-9\.:\-]+$/) { $allcaps += 1; }
 
+        # check for the presence of a US city
         if ($test_lines[$cnt] =~ /.+, [A-Z][A-Z] [0-9]{5}/) { $US_city = "TRUE"; }
         
         $punctuation += () = $test_lines[$cnt] =~ /[[:punct:]]/g;
