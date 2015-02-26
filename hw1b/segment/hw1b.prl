@@ -58,15 +58,18 @@ while (defined ($line = <STDIN>))
 {
     chomp $line;
 
-    if ($line =~ /^#BLANK#/ && ($prev_blank != 1))
+    if ($line =~ /^#BLANK#/)
     {
-        # new segment
-        $numb_segs += 1;
-        $numb_lines[$numb_segs]  = 0;
-        $dist_BOS[$numb_segs] += 1;
+        if ($prev_blank != 1)
+        {
+            # new segment
+            $numb_segs += 1;
+            $numb_lines[$numb_segs]  = 0;
+            $dist_BOS[$numb_segs] += 1;
+        }
         $prev_blank = 1;
     }
-    elsif ($prev_blank != 1)
+    else
     {
         # check if start of new document
         if ($prev_blank && $line =~ /^NNHEAD/)
@@ -199,7 +202,7 @@ sub process_segment {
         print $file $allcaps, ",";
         print $file $US_city, ",";
         print $file $punctuation / $total_length, ",";
-        print $file $real_lines[0], "\n";
+        print $file $real_lines[$i][0], "\n";
 
     }
 }
