@@ -24,10 +24,8 @@ my $correct   = 0;       # number of correct classifications
 my $incorrect = 0;       # number of incorrect classifications
 my $line      = undef;
 my $prev_blank = 0;
-my $dist_BOS  = ( );
+my $dist_BOS  = 0;
 my $numb_segs = 0; # tracks the number of segments in a document
-$numb_lines[0] = 0;
-$dist_BOS[0] = 0;
 
 # print the first chunk of the ARFF file
 open($file, '>', 'cat_data.arff');
@@ -58,18 +56,10 @@ while (defined ($line = <STDIN>))
 {
     chomp $line;
 
-    if ($line =~ /^#BLANK#/ && ($prev_blank != 1))
+    if ($line =~ /^#BLANK#/)
     {
-        # new segment
-        $numb_segs += 1;
-        $numb_lines[$numb_segs]  = 0;
-        $dist_BOS[$numb_segs] += 1;
-        $prev_blank = 1;
-    }
-    elsif ($prev_blank != 1)
-    {
-        # check if start of new document
-        if ($prev_blank && $line =~ /^NNHEAD/)
+        # check if end of document
+        if ($prev_blank)
         {
             # now go ahead and process whole document
             &process_segment;
@@ -79,10 +69,16 @@ while (defined ($line = <STDIN>))
             @test_lines = ( );
             @real_lines = ( );
             @numb_lines = ( );
-            $numb_lines[0] = 0;
-            $dist_BOS[0] = 0;
         }
+        $prev_blank = 1;
 
+        # new segment
+        $numb_segs += 1;
+        $numb_lines[$numb_segs]  = 0;
+        $dist_BOS[$numb_segs] += 1;
+    }
+    else
+    {
         ($test_lines[$numb_segs][ $numb_lines[$numb_segs] ]) = ($line =~ m/^[^\t]+\t(.*)/);
         ($real_lines[$numb_segs][ $numb_lines[$numb_segs] ]) = ($line =~ m/^([^\t]+)\t/  );
 
@@ -120,7 +116,7 @@ sub process_segment {
         $US_city = "FALSE";
         $punctuation = 0;
 
-        for ($cnt = 0; $cnt < $numb_lines[$i]; $cnt++)
+        for ($cnt = 0; $cnt < scalar $test_lines[$i]; $cnt++)
         {
             # count the number of spaces the line starts with
             $spaces += length(($test_lines[$i][$cnt] =~ /^( *)/)[0]);
@@ -180,22 +176,22 @@ sub process_segment {
         }
 
 
-        print $file $numb_lines[$i], ",";
+        print $file $numb_lines, ",";
         print $file $total_length, ",";
-        print $file $dist_BOS[$i], ",";
+        print $file $dist_BOS, ",";
         print $file $spaces, ",";
         print $file $tabs, ",";
-        print $file $numeric / $numb_lines[$i], ",";
-        print $file $alpha / $numb_lines[$i], ",";
+        print $file $numeric / $numb_lines, ",";
+        print $file $alpha / $numb_lines, ",";
         print $file $strange / $total_length, ",";
         print $file $colon, ",";
         print $file $quoted, ",";
-        print $file $numbered / $numb_lines[$i], ",";
+        print $file $numbered / $numb_lines, ",";
         print $file $email, ",";
-        print $file $dashes / $numb_lines[$i], ",";
+        print $file $dashes / $numb_lines, ",";
         print $file $spaces / $total_length, ",";
         print $file $hanging, ",";
-        print $file $capital / $numb_lines[$i], ",";
+        print $file $capital / $numb_lines, ",";
         print $file $allcaps, ",";
         print $file $US_city, ",";
         print $file $punctuation / $total_length, ",";
