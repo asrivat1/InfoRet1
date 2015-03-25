@@ -76,7 +76,10 @@ while (defined ($line = <STDIN>))
         if ($prev_blank && $line =~ /^NNHEAD/)
         {
             # now go ahead and process whole document
-            &process_segment;
+            if( $numb_lines[$numb_segs - 1] > 0 )
+            {
+                &process_segment;
+            }
 
             $dist_BOS = ( );
             $numb_segs = 0;
